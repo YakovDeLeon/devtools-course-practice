@@ -33,7 +33,6 @@ TEST(Yakovlev_Denis_ComplexNumberTest,
 
     // Assert
     EXPECT_EQ(z, y);
-    EXPECT_EQ(z, y);
 }
 
 TEST(Yakovlev_Denis_ComplexNumberTest,
@@ -53,7 +52,6 @@ TEST(Yakovlev_Denis_ComplexNumberTest,
     ComplexNumber Res(reRes, imRes);
 
     // Assert
-    EXPECT_EQ(z, Res);
     EXPECT_EQ(z, Res);
 }
 
