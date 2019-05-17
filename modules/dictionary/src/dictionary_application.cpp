@@ -33,12 +33,10 @@ void DicitonaryApplication::Help(
     message_ = std::string(message) +
         "\n\nThis is a dictionary application.\n"
         "Please provide arguments in the following format:\n\n"
-
         "  $ " + appname + " <word_1_key> <word_1_value> "
         "<word_2_key> <word_2_value> ... " +
         " <word_k_key> <word_k_value> <operation> "
         "<word_key>\n\n"
-
         "Where word_key is string and word_value is integer number, " +
         "and <operation> is one of\n"
         "-s' - search element,\n"
