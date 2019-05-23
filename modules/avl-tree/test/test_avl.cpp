@@ -39,7 +39,7 @@ TEST(CAvlTest,
         vKeys.push_back(GetRandomKey(nBegin, nEnd));
         tree.Insert(vKeys[i]);
     }
-
+  
     for (int32_t i = 0; i < nLenght; i++) {
         ASSERT_EQ(vKeys[i], tree.Find(vKeys[i]));
     }
@@ -49,6 +49,7 @@ TEST(CAvlTest,
     CanRemoveObject) {
     CAvl tree;
     std::vector<key> vKeys(nLenght);
+
 
     for (int32_t i = 0; i < nLenght; i++) {
         vKeys.push_back(GetRandomKey(nBegin, nEnd));

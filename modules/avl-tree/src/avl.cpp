@@ -21,6 +21,7 @@ CNode* CAvl::Insert(const key& x, CNode* t) {
                 t = DoubleRightRotate(t);
             }
         }
+
     } else if (x > t->data_) {
         t->pRight_ = Insert(key(x), t->pRight_);
         if (Height(t->pRight_) - Height(t->pLeft_) == 2) {
