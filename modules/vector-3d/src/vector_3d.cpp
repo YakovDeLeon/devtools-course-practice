@@ -89,7 +89,6 @@ Vector3d Vector3d::operator / (const double& d) const {
         division.setY(this->getY() / d);
         division.setZ(this->getZ() / d);
     }
-
     return division;
 }
 
@@ -141,3 +140,4 @@ bool Vector3d::operator == (const Vector3d& v) const {
 bool Vector3d::operator != (const Vector3d& v) const {
     return !(*this == v);
 }
+

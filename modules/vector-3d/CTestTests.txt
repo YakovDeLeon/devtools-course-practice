@@ -1,0 +1,87 @@
+#############################################
+##### Testing
+#############################################
+
+set(prefix "${MODULE}")
+
+add_test(
+    NAME ${prefix}_Can_Run
+    COMMAND ${APPLICATION}
+)
+
+set_tests_properties (${prefix}_Can_Run PROPERTIES
+    LABELS "${MODULE}")
+
+add_test(
+    NAME ${prefix}_Can_Add_Vectors
+    COMMAND ${APPLICATION} 1 2 3 3 2 1 +
+)
+
+set_tests_properties (${prefix}_Can_Add_Vectors PROPERTIES
+    PASS_REGULAR_EXPRESSION "X = 4 Y = 4 Z = 4"
+    LABELS "${MODULE}")
+
+add_test(
+    NAME ${prefix}_Can_Diff_Vectors
+    COMMAND ${APPLICATION} 1 2 3 1 1 1 -
+)
+
+set_tests_properties (${prefix}_Can_Diff_Vectors PROPERTIES
+    PASS_REGULAR_EXPRESSION "X = 0 Y = 1 Z = 2"
+    LABELS "${MODULE}")
+
+add_test(
+    NAME ${prefix}_Can_Mult_Vectors
+    COMMAND ${APPLICATION} 1 2 2 3 2 1 *
+)
+set_tests_properties (${prefix}_Can_Mult_Vectors PROPERTIES
+    PASS_REGULAR_EXPRESSION "Result = 9"
+    LABELS "${MODULE}")
+
+add_test(
+    NAME ${prefix}_Can_Mult_Vectors_and_Num
+    COMMAND ${APPLICATION} 1 2 2 4 *
+)
+set_tests_properties (${prefix}_Can_Mult_Vectors_and_Num PROPERTIES
+    PASS_REGULAR_EXPRESSION "X = 4 Y = 8 Z = 8"
+    LABELS "${MODULE}")
+
+add_test(
+    NAME ${prefix}_Can_Div_Vectors_and_Num
+    COMMAND ${APPLICATION} 4 2 2 2 /
+)
+set_tests_properties (${prefix}_Can_Div_Vectors_and_Num PROPERTIES
+    PASS_REGULAR_EXPRESSION "X = 2 Y = 1 Z = 1"
+    LABELS "${MODULE}")
+
+add_test(
+    NAME ${prefix}_Can_Find_Norma
+    COMMAND ${APPLICATION} 4 0 3 norma
+)
+set_tests_properties (${prefix}_Can_Find_Norma PROPERTIES
+    PASS_REGULAR_EXPRESSION "Result = 5"
+    LABELS "${MODULE}")
+
+add_test(
+    NAME ${prefix}_Can_Normalize_Vectors
+    COMMAND ${APPLICATION} 4 0 3 normalize
+)
+set_tests_properties (${prefix}_Can_Normalize_Vectors PROPERTIES
+    PASS_REGULAR_EXPRESSION "X = 0.8 Y = 0 Z = 0.6"
+    LABELS "${MODULE}")
+
+add_test(
+    NAME ${prefix}_Cant_Div_by_Zero
+    COMMAND ${APPLICATION} 1 2 3 0 /
+)
+set_tests_properties (${prefix}_Cant_Div_by_Zero PROPERTIES
+    PASS_REGULAR_EXPRESSION "Can't divide by zero"
+    LABELS "${MODULE}")
+
+add_test(
+    NAME ${prefix}_Cant_Find_Norma
+    COMMAND ${APPLICATION} 0 0 0 normalize
+)
+set_tests_properties (${prefix}_Cant_Find_Norma PROPERTIES
+    PASS_REGULAR_EXPRESSION "Can't find norma"
+    LABELS "${MODULE}")

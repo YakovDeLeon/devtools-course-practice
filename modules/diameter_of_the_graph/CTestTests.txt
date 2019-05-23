@@ -1,0 +1,256 @@
+#############################################
+##### Testing
+#############################################
+
+set(prefix "${MODULE}")
+
+add_test(
+    NAME ${prefix}_Can_Run
+    COMMAND ${APPLICATION}
+)
+
+set_tests_properties (${prefix}_Can_Run PROPERTIES
+    LABELS "${MODULE}")
+
+add_test(
+    NAME ${prefix}_Printing_Help_Info_Without_Args
+    COMMAND ${APPLICATION}
+)
+
+set_tests_properties (${prefix}_Printing_Help_Info_Without_Args PROPERTIES
+	PASS_REGULAR_EXPRESSION "Commands:\n"
+    LABELS "${MODULE}")
+
+add_test(
+    NAME ${prefix}_Printing_Help_Info_With_help_Arg
+    COMMAND ${APPLICATION} help
+)
+
+set_tests_properties (${prefix}_Printing_Help_Info_With_help_Arg PROPERTIES
+	PASS_REGULAR_EXPRESSION "Commands:\n"
+    LABELS "${MODULE}")
+
+add_test(
+    NAME ${prefix}_Cant_init_If_Has_No_Size
+    COMMAND ${APPLICATION} init
+)
+
+set_tests_properties (${prefix}_Cant_init_If_Has_No_Size PROPERTIES
+	PASS_REGULAR_EXPRESSION "Incorrect usage of command \"init\""
+    LABELS "${MODULE}")
+
+add_test(
+    NAME ${prefix}_Cant_Work_Without_Vertexs
+    COMMAND ${APPLICATION} init 0
+)
+
+set_tests_properties (${prefix}_Cant_Work_Without_Vertexs PROPERTIES
+	PASS_REGULAR_EXPRESSION "Error: graph has no vertexes"
+    LABELS "${MODULE}")
+
+add_test(
+    NAME ${prefix}_Cant_Use_add_As_First_Arg
+    COMMAND ${APPLICATION} add 1 0
+)
+
+set_tests_properties (${prefix}_Cant_Use_add_As_First_Arg PROPERTIES
+	PASS_REGULAR_EXPRESSION "Incorrect usage of command \"add\""
+    LABELS "${MODULE}")
+
+add_test(
+    NAME ${prefix}_Cant_Use_del_As_First_Arg
+    COMMAND ${APPLICATION} del 1 0
+)
+
+set_tests_properties (${prefix}_Cant_Use_del_As_First_Arg PROPERTIES
+	PASS_REGULAR_EXPRESSION "Incorrect usage of command \"del\""
+    LABELS "${MODULE}")
+
+add_test(
+    NAME ${prefix}_Cant_init_After_init
+    COMMAND ${APPLICATION} init 1 init
+)
+
+set_tests_properties (${prefix}_Cant_init_After_init PROPERTIES
+	PASS_REGULAR_EXPRESSION "Incorrect usage of command \"init\""
+    LABELS "${MODULE}")
+
+add_test(
+    NAME ${prefix}_Cant_Use_help_After_init
+    COMMAND ${APPLICATION} init 1 help
+)
+
+set_tests_properties (${prefix}_Cant_Use_help_After_init PROPERTIES
+	PASS_REGULAR_EXPRESSION "Incorrect usage of command \"help\""
+    LABELS "${MODULE}")
+
+add_test(
+    NAME ${prefix}_Cant_Use_Unknown_Command
+    COMMAND ${APPLICATION} abacaba
+)
+
+set_tests_properties (${prefix}_Cant_Use_Unknown_Command PROPERTIES
+	PASS_REGULAR_EXPRESSION "Unknown command: abacaba"
+    LABELS "${MODULE}")
+
+add_test(
+    NAME ${prefix}_Cant_Use_Unknown_Command_After_init
+    COMMAND ${APPLICATION} init 1 abacaba
+)
+
+set_tests_properties (${prefix}_Cant_Use_Unknown_Command_After_init PROPERTIES
+	PASS_REGULAR_EXPRESSION "Unknown command: abacaba"
+    LABELS "${MODULE}")
+
+add_test(
+    NAME ${prefix}_Cant_Use_Anything_Without_Digits_In_Some_Args
+    COMMAND ${APPLICATION} init a1
+)
+
+set_tests_properties (${prefix}_Cant_Use_Anything_Without_Digits_In_Some_Args PROPERTIES
+	PASS_REGULAR_EXPRESSION "Error with argument 2: not a number"
+    LABELS "${MODULE}")
+
+add_test(
+    NAME ${prefix}_Cant_Calculate_Diameter_With_Disconnected_Graph
+    COMMAND ${APPLICATION} init 8 add 3 5
+)
+
+set_tests_properties (${prefix}_Cant_Calculate_Diameter_With_Disconnected_Graph PROPERTIES
+	PASS_REGULAR_EXPRESSION "Error: disconnected graph"
+    LABELS "${MODULE}")
+
+add_test(
+    NAME ${prefix}_Working_With_Correct_Args
+    COMMAND ${APPLICATION} init 2 add 0 1
+)
+
+set_tests_properties (${prefix}_Working_With_Correct_Args PROPERTIES
+	PASS_REGULAR_EXPRESSION "1"
+    LABELS "${MODULE}")
+
+add_test(
+    NAME ${prefix}_Cant_Use_Very_Big_Numbers
+    COMMAND ${APPLICATION} init 90072231873
+)
+
+set_tests_properties (${prefix}_Cant_Use_Very_Big_Numbers PROPERTIES
+	PASS_REGULAR_EXPRESSION "Error with argument 2: too big number"
+    LABELS "${MODULE}")
+
+add_test(
+    NAME ${prefix}_Cant_Use_Very_Big_Numbers_With_Accseptable_Length
+    COMMAND ${APPLICATION} init 51
+)
+
+set_tests_properties (${prefix}_Cant_Use_Very_Big_Numbers_With_Accseptable_Length PROPERTIES
+	PASS_REGULAR_EXPRESSION "Error with argument 2: too big number"
+    LABELS "${MODULE}")
+
+add_test(
+    NAME ${prefix}_Can_Use_With_Length_About_To_Max
+    COMMAND ${APPLICATION} init 49
+)
+
+set_tests_properties (${prefix}_Can_Use_With_Length_About_To_Max PROPERTIES
+	PASS_REGULAR_EXPRESSION "Error: disconnected graph"
+    LABELS "${MODULE}")
+
+add_test(
+    NAME ${prefix}_Cant_Use_add_With_Incorrect_First_Arg
+    COMMAND ${APPLICATION} init 2 add 53 1
+)
+
+set_tests_properties (${prefix}_Cant_Use_add_With_Incorrect_First_Arg PROPERTIES
+	PASS_REGULAR_EXPRESSION "Error with argument 4: too big number"
+    LABELS "${MODULE}")
+
+add_test(
+    NAME ${prefix}_Cant_Use_add_With_Too_Big_First_Arg
+    COMMAND ${APPLICATION} init 2 add 5 1
+)
+
+set_tests_properties (${prefix}_Cant_Use_add_With_Too_Big_First_Arg PROPERTIES
+	PASS_REGULAR_EXPRESSION "Error with argument 4: out of range"
+    LABELS "${MODULE}")
+
+add_test(
+    NAME ${prefix}_Cant_Use_add_With_Incorrect_Second_Arg
+    COMMAND ${APPLICATION} init 2 add 1 53
+)
+
+set_tests_properties (${prefix}_Cant_Use_add_With_Incorrect_Second_Arg PROPERTIES
+	PASS_REGULAR_EXPRESSION "Error with argument 5: too big number"
+    LABELS "${MODULE}")
+
+add_test(
+    NAME ${prefix}_Cant_Use_add_With_Too_Big_Second_Arg
+    COMMAND ${APPLICATION} init 2 add 1 5
+)
+
+set_tests_properties (${prefix}_Cant_Use_add_With_Too_Big_Second_Arg PROPERTIES
+	PASS_REGULAR_EXPRESSION "Error with argument 5: out of range"
+    LABELS "${MODULE}")
+
+add_test(
+    NAME ${prefix}_Cant_Use_add_With_Too_Few_Args
+    COMMAND ${APPLICATION} init 2 add 1
+)
+
+set_tests_properties (${prefix}_Cant_Use_add_With_Too_Few_Args PROPERTIES
+	PASS_REGULAR_EXPRESSION "Error: add has too few arguments"
+    LABELS "${MODULE}")
+
+add_test(
+    NAME ${prefix}_Cant_Use_del_With_Incorrect_First_Arg
+    COMMAND ${APPLICATION} init 2 del 53 1
+)
+
+set_tests_properties (${prefix}_Cant_Use_del_With_Incorrect_First_Arg PROPERTIES
+	PASS_REGULAR_EXPRESSION "Error with argument 4: too big number"
+    LABELS "${MODULE}")
+
+add_test(
+    NAME ${prefix}_Cant_Use_del_With_Too_Big_First_Arg
+    COMMAND ${APPLICATION} init 2 del 5 1
+)
+
+set_tests_properties (${prefix}_Cant_Use_del_With_Too_Big_First_Arg PROPERTIES
+	PASS_REGULAR_EXPRESSION "Error with argument 4: out of range"
+    LABELS "${MODULE}")
+
+add_test(
+    NAME ${prefix}_Cant_Use_del_With_Incorrect_Second_Arg
+    COMMAND ${APPLICATION} init 2 del 1 53
+)
+
+set_tests_properties (${prefix}_Cant_Use_del_With_Incorrect_Second_Arg PROPERTIES
+	PASS_REGULAR_EXPRESSION "Error with argument 5: too big number"
+    LABELS "${MODULE}")
+
+add_test(
+    NAME ${prefix}_Cant_Use_del_With_Too_Big_Second_Arg
+    COMMAND ${APPLICATION} init 2 del 1 5
+)
+
+set_tests_properties (${prefix}_Cant_Use_del_With_Too_Big_Second_Arg PROPERTIES
+	PASS_REGULAR_EXPRESSION "Error with argument 5: out of range"
+    LABELS "${MODULE}")
+
+add_test(
+    NAME ${prefix}_Cant_Use_del_With_Too_Few_Args
+    COMMAND ${APPLICATION} init 2 del 1
+)
+
+set_tests_properties (${prefix}_Cant_Use_del_With_Too_Few_Args PROPERTIES
+	PASS_REGULAR_EXPRESSION "Error: del has too few arguments"
+    LABELS "${MODULE}")
+
+add_test(
+    NAME ${prefix}_del_Works_Correctly
+    COMMAND ${APPLICATION} init 3 add 0 1 add 1 2 add 2 0 del 2 1
+)
+
+set_tests_properties (${prefix}_del_Works_Correctly PROPERTIES
+	PASS_REGULAR_EXPRESSION "2"
+    LABELS "${MODULE}")

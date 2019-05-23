@@ -1,0 +1,38 @@
+#############################################
+##### Testing
+#############################################
+
+set(prefix "${MODULE}")
+
+add_test(
+    NAME ${prefix}_can_Run
+    COMMAND ${APPLICATION}
+)
+set_tests_properties (${prefix}_can_Run PROPERTIES
+    LABELS "${MODULE}")
+
+add_test(
+    NAME ${prefix}_can_Print_Help_Without_Arguments
+    COMMAND ${APPLICATION}
+)
+
+set_tests_properties (${prefix}_can_Print_Help_Without_Arguments PROPERTIES
+    PASS_REGULAR_EXPRESSION "This application allows you to calculate"
+    LABELS "${MODULE}")
+
+
+add_test(
+    NAME ${prefix}_can_Calculate_Final_Amount
+    COMMAND ${APPLICATION} 100000 10 24 4
+)
+set_tests_properties (${prefix}_can_Calculate_Final_Amount PROPERTIES
+    PASS_REGULAR_EXPRESSION "121000.000000"
+    LABELS "${MODULE}")
+
+add_test(
+    NAME ${prefix}_can_not_Calculate_With_Negative_Numbers
+    COMMAND ${APPLICATION} -10000 10 20 1
+)
+set_tests_properties (${prefix}_can_not_Calculate_With_Negative_Numbers PROPERTIES
+    PASS_REGULAR_EXPRESSION "Wrong argument!"
+    LABELS "${MODULE}")

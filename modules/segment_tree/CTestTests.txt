@@ -1,0 +1,93 @@
+#############################################
+##### Testing
+#############################################
+
+set(prefix "${MODULE}")
+
+add_test(
+    NAME ${prefix}_Can_Run
+    COMMAND ${APPLICATION}
+)
+set_tests_properties (${prefix}_Can_Run PROPERTIES
+    LABELS "${MODULE}")
+
+add_test(
+    NAME ${prefix}_Can_Print_Help_Without_Arguments
+    COMMAND ${APPLICATION}
+)
+
+set_tests_properties (${prefix}_Can_Print_Help_Without_Arguments PROPERTIES
+    PASS_REGULAR_EXPRESSION "This is application for segment tree class"
+    LABELS "${MODULE}")
+
+add_test(
+    NAME ${prefix}_Can_Getting_After_Adding
+    COMMAND ${APPLICATION} 1 5 1 add2 1 3 2 get1 3
+)
+
+set_tests_properties (${prefix}_Can_Getting_After_Adding PROPERTIES
+    PASS_REGULAR_EXPRESSION "Index = 3 Value = 2"
+    LABELS "${MODULE}")
+
+add_test(
+    NAME ${prefix}_Cant_Do_Anything_When_less_three_Arguments
+    COMMAND ${APPLICATION} 1 5
+)
+
+set_tests_properties (${prefix}_Cant_Do_Anything_When_less_three_Arguments PROPERTIES
+    PASS_REGULAR_EXPRESSION "Minimum 3 arguments"
+    LABELS "${MODULE}")
+
+add_test(
+    NAME ${prefix}_Throw_Error_When_Border_Is_Not_A_Number
+    COMMAND ${APPLICATION} 1 e 2 get1 2
+)
+
+set_tests_properties (${prefix}_Throw_Error_When_Border_Is_Not_A_Number PROPERTIES
+    PASS_REGULAR_EXPRESSION "Wrong number format!"
+    LABELS "${MODULE}")
+
+add_test(
+    NAME ${prefix}_Throw_Error_When_Incorrect_Use_Function_On_Segment
+    COMMAND ${APPLICATION} 1 4 5 get1 2
+)
+
+set_tests_properties (${prefix}_Throw_Error_When_Incorrect_Use_Function_On_Segment PROPERTIES
+    PASS_REGULAR_EXPRESSION "Wrong number of function!"
+    LABELS "${MODULE}")
+
+add_test(
+    NAME ${prefix}_Correct_Getting_After_Setting_On_Segment
+    COMMAND ${APPLICATION} 1 4 1 set2 3 4 5 get2 2 4
+)
+
+set_tests_properties (${prefix}_Correct_Getting_After_Setting_On_Segment PROPERTIES
+    PASS_REGULAR_EXPRESSION "Left border = 2 Right border = 4 Value = 10"
+    LABELS "${MODULE}")
+
+add_test(
+    NAME ${prefix}_Throw_Error_When_Incorrect_Use_Operation
+    COMMAND ${APPLICATION} 1 4 1 sat1 2 3
+)
+
+set_tests_properties (${prefix}_Throw_Error_When_Incorrect_Use_Operation PROPERTIES
+    PASS_REGULAR_EXPRESSION "Unknown operation: sat1"
+    LABELS "${MODULE}")
+
+add_test(
+    NAME ${prefix}_Throw_Error_When_Try_To_Use_Operation_With_Incorrect_Borders
+    COMMAND ${APPLICATION} 1 4 1 add1 5 3
+)
+
+set_tests_properties (${prefix}_Throw_Error_When_Try_To_Use_Operation_With_Incorrect_Borders PROPERTIES
+    PASS_REGULAR_EXPRESSION "Out of borders!"
+    LABELS "${MODULE}")
+
+add_test(
+    NAME ${prefix}_Can_Correct_Setting_After_Adding
+    COMMAND ${APPLICATION} 1 4 1 add2 2 4 3 set2 2 3 1 get2 2 4
+)
+
+set_tests_properties (${prefix}_Can_Correct_Setting_After_Adding PROPERTIES
+    PASS_REGULAR_EXPRESSION "Left border = 2 Right border = 4 Value = 5"
+    LABELS "${MODULE}")

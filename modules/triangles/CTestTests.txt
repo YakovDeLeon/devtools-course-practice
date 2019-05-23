@@ -10,3 +10,75 @@ add_test(
 )
 set_tests_properties (${prefix}_can_Run PROPERTIES
     LABELS "${MODULE}")
+	
+add_test(
+    NAME ${prefix}_can_Print_Help_Without_Arguments
+    COMMAND ${APPLICATION}
+)
+set_tests_properties (${prefix}_can_Print_Help_Without_Arguments PROPERTIES
+    PASS_REGULAR_EXPRESSION "This is a triangles application"
+    LABELS "${MODULE}")
+	
+add_test(
+    NAME ${prefix}_can_Check_Number_Of_Arguments
+    COMMAND ${APPLICATION} 1 2
+)
+set_tests_properties (${prefix}_can_Check_Number_Of_Arguments PROPERTIES
+    PASS_REGULAR_EXPRESSION "ERROR: Should be 7 arguments."
+    LABELS "${MODULE}")
+	
+add_test(
+    NAME ${prefix}_can_Detect_Wrong_Number_Format
+    COMMAND ${APPLICATION} 1 ip 2 3 3 1 points
+)
+set_tests_properties (${prefix}_can_Detect_Wrong_Number_Format PROPERTIES
+    PASS_REGULAR_EXPRESSION "Wrong number format!"
+    LABELS "${MODULE}")
+	
+add_test(
+    NAME ${prefix}_can_Detect_Wrong_Operation_Format
+    COMMAND ${APPLICATION} 0 0 1 0 1 1 ppoints
+)
+set_tests_properties (${prefix}_can_Detect_Wrong_Operation_Format PROPERTIES
+    PASS_REGULAR_EXPRESSION "Wrong operation format!"
+    LABELS "${MODULE}")
+	
+add_test(
+    NAME ${prefix}_can_Get_Points
+    COMMAND ${APPLICATION} 2.5 4.5 1.0 1.5 5 0 points
+)
+set_tests_properties (${prefix}_can_Get_Points PROPERTIES
+    PASS_REGULAR_EXPRESSION "A\\(2.5\\, 4.5\\) B\\(1\\, 1.5\\) C\\(5\\, 0\\)"
+    LABELS "${MODULE}")
+	
+add_test(
+    NAME ${prefix}_can_Get_Angles
+    COMMAND ${APPLICATION} 2.5 4.5 1.0 1.5 5 0 angles
+)
+set_tests_properties (${prefix}_can_Get_Angles PROPERTIES
+    PASS_REGULAR_EXPRESSION "Angle A = 55.6197 Angle B = 83.991 Angle C = 40.3894"
+    LABELS "${MODULE}")
+	
+add_test(
+    NAME ${prefix}_can_Get_Sides
+    COMMAND ${APPLICATION} 2.5 4.5 1.0 1.5 5 0 sides
+)
+set_tests_properties (${prefix}_can_Get_Sides PROPERTIES
+    PASS_REGULAR_EXPRESSION "AB = 3.3541 AC = 5.14782 BC = 4.272"
+    LABELS "${MODULE}")
+
+add_test(
+    NAME ${prefix}_can_Get_Perimeter
+    COMMAND ${APPLICATION} 2.5 4.5 1.0 1.5 5 0 perimeter
+)
+set_tests_properties (${prefix}_can_Get_Perimeter PROPERTIES
+    PASS_REGULAR_EXPRESSION "Perimeter = 12.7739"
+    LABELS "${MODULE}")
+
+add_test(
+    NAME ${prefix}_can_Get_Square
+    COMMAND ${APPLICATION} 2.5 4.5 1.0 1.5 5 0 square
+)
+set_tests_properties (${prefix}_can_Get_Square PROPERTIES
+    PASS_REGULAR_EXPRESSION "Square = 7.125"
+    LABELS "${MODULE}")

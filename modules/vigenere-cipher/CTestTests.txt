@@ -1,0 +1,66 @@
+#############################################
+##### Testing
+#############################################
+
+set(prefix "${MODULE}")
+
+add_test(
+    NAME ${prefix}_can_Run
+    COMMAND ${APPLICATION}
+)
+set_tests_properties (${prefix}_can_Run PROPERTIES
+    LABELS "${MODULE}")
+
+add_test(
+    NAME ${prefix}_Can_Print_Help_Without_Arguments
+    COMMAND ${APPLICATION}
+)
+
+set_tests_properties (${prefix}_Can_Print_Help_Without_Arguments PROPERTIES
+    PASS_REGULAR_EXPRESSION "This is application for Vigenere Cipher Class"
+    LABELS "${MODULE}")
+
+add_test(
+    NAME ${prefix}_Can_Encrypt_String
+    COMMAND ${APPLICATION} encrypt string key
+)
+
+set_tests_properties (${prefix}_Can_Encrypt_String PROPERTIES
+    PASS_REGULAR_EXPRESSION "cxpsre"
+    LABELS "${MODULE}")
+
+add_test(
+    NAME ${prefix}_Can_Decrypt_String
+    COMMAND ${APPLICATION} decrypt string key
+)
+
+set_tests_properties (${prefix}_Can_Decrypt_String PROPERTIES
+    PASS_REGULAR_EXPRESSION "iptyji"
+    LABELS "${MODULE}")
+
+add_test(
+    NAME ${prefix}_Detect_Incorrect_Arguments
+    COMMAND ${APPLICATION} deecrypt string key
+)
+
+set_tests_properties (${prefix}_Detect_Incorrect_Arguments PROPERTIES
+    PASS_REGULAR_EXPRESSION "Unknown operation: deecrypt"
+    LABELS "${MODULE}")
+
+add_test(
+    NAME ${prefix}_Detect_Too_Few_Arguments
+    COMMAND ${APPLICATION} decrypt string
+)
+
+set_tests_properties (${prefix}_Detect_Too_Few_Arguments PROPERTIES
+    PASS_REGULAR_EXPRESSION "Too few arguments!"
+    LABELS "${MODULE}")
+
+add_test(
+    NAME ${prefix}_Detect_Too_Many_Arguments
+    COMMAND ${APPLICATION} decrypt string or isnot string
+)
+
+set_tests_properties (${prefix}_Detect_Too_Many_Arguments PROPERTIES
+    PASS_REGULAR_EXPRESSION "Too many arguments!"
+    LABELS "${MODULE}")

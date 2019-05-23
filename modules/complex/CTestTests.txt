@@ -1,0 +1,84 @@
+#############################################
+##### Testing
+#############################################
+
+set(prefix "${MODULE}")
+
+add_test(
+    NAME ${prefix}_Can_Run
+    COMMAND ${APPLICATION}
+)
+set_tests_properties (${prefix}_Can_Run PROPERTIES
+    LABELS "${MODULE}")
+
+add_test(
+    NAME ${prefix}_Print_Help_Without_Arguments
+    COMMAND ${APPLICATION}
+)
+set_tests_properties (${prefix}_Print_Help_Without_Arguments PROPERTIES
+    PASS_REGULAR_EXXPRESSION "This is a complex number calculator"
+    LABELS "${MODULE}")
+
+add_test(
+    NAME ${prefix}_Check_Arguments
+    COMMAND ${APPLICATION} 1 2
+)
+set_tests_properties (${prefix}_Check_Arguments PROPERTIES
+    PASS_REGULAR_EXXPRESSION "ERROR: Should be 5 arguments."
+    LABELS "${MODULE}")
+
+add_test(
+    NAME ${prefix}_Can_Find_Wrong_Argument_Format
+    COMMAND ${APPLICATION} 1 2 + qwerty 4
+)
+set_tests_properties (${prefix}_Can_Find_Wrong_Argument_Format PROPERTIES
+    PASS_REGULAR_EXXPRESSION "ERROR: Wrong number format!"
+    LABELS "${MODULE}")
+
+add_test(
+    NAME ${prefix}_Can_Find_Wrong_Operation_Format
+    COMMAND ${APPLICATION} 1 2 qwerty 3 4
+)
+set_tests_properties (${prefix}_Can_Find_Wrong_Operation_Format PROPERTIES
+    PASS_REGULAR_EXXPRESSION "ERROR: Wrong operation format!"
+    LABELS "${MODULE}")
+
+add_test(
+    NAME ${prefix}_Can_Add_Numbers
+    COMMAND ${APPLICATION} 1 2 + 3 4
+)
+set_tests_properties (${prefix}_Can_Add_Numbers PROPERTIES
+    PASS_REGULAR_EXXPRESSION "Real = 4 Imaginary = 6"
+    LABELS "${MODULE}")
+
+add_test(
+    NAME ${prefix}_Can_Substruct_Numbers
+    COMMAND ${APPLICATION} 3 4 - 1 2
+)
+set_tests_properties (${prefix}_Can_Substruct_Numbers PROPERTIES
+    PASS_REGULAR_EXXPRESSION "Real = 2 Imaginary = 2"
+    LABELS "${MODULE}")
+
+add_test(
+    NAME ${prefix}_Can_Multiply_Numbers
+    COMMAND ${APPLICATION} 3 4 * 1 2
+)
+set_tests_properties (${prefix}_Can_Multiply_Numbers PROPERTIES
+    PASS_REGULAR_EXXPRESSION "Real = -5 Imaginary = 10"
+    LABELS "${MODULE}")
+
+add_test(
+    NAME ${prefix}_Can_Divide_Numbers
+    COMMAND ${APPLICATION} -5 10 / 1 2
+)
+set_tests_properties (${prefix}_Can_Divide_Numbers PROPERTIES
+    PASS_REGULAR_EXXPRESSION "Real = 3 Imaginary = 4"
+    LABELS "${MODULE}")
+
+add_test(
+    NAME ${prefix}_Can_Not_Divide_By_Zero
+    COMMAND ${APPLICATION} -5 10 / 0 0
+)
+set_tests_properties (${prefix}_Can_Not_Divide_By_Zero PROPERTIES
+    PASS_REGULAR_EXXPRESSION "Division by zero!"
+    LABELS "${MODULE}")

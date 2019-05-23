@@ -36,3 +36,4 @@ class Vector3d {
 };
 
 #endif  // MODULES_VECTOR_3D_INCLUDE_VECTOR_3D_H_
+

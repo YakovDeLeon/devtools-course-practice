@@ -25,7 +25,7 @@
 
 [gitter]:            https://gitter.im/devtools-course-practice-2019/community
 [hall-of-fame]:      https://docs.google.com/spreadsheets/d/1m5rS9Faw9btVamYrwWCAzIUgrL-EvZgkaOg4tUHhmO0/edit#gid=1928505574
-[labs]:              https://github.com/UNN-VMK-Software/devtools-course-practice/tree/master/lab-guide
+[labs]:              https://github.com/UNN-ITMM-Software/devtools-course-practice/tree/master/lab-guide
 [control-questions]: https://github.com/UNN-VMK-Software/devtools-course-theory/blob/master/slides/control-questions.md
 [theory]:            https://github.com/UNN-VMK-Software/devtools-course-theory
 [html]:              http://unn-itmm-software.github.io/devtools-course-theory/

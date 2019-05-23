@@ -1,0 +1,62 @@
+#############################################
+##### Testing
+#############################################
+
+set(prefix "${MODULE}")
+
+add_test(
+    NAME ${prefix}_can_Run
+    COMMAND ${APPLICATION}
+)
+set_tests_properties (${prefix}_can_Run PROPERTIES
+    LABELS "${MODULE}")
+	
+add_test(
+    NAME ${prefix}_can_Print_Help_Without_Arguments
+    COMMAND ${APPLICATION}
+)
+set_tests_properties (${prefix}_can_Print_Help_Without_Arguments PROPERTIES
+    PASS_REGULAR_EXPRESSION "This is a radix application"
+    LABELS "${MODULE}")
+	
+add_test(
+    NAME ${prefix}_can_Check_Number_Of_Arguments
+    COMMAND ${APPLICATION} 1 2 3
+)
+set_tests_properties (${prefix}_can_Check_Number_Of_Arguments PROPERTIES
+    PASS_REGULAR_EXPRESSION "ERROR: Should be 2 arguments."
+    LABELS "${MODULE}")
+	
+add_test(
+    NAME ${prefix}_can_Detect_Wrong_Number_Format
+    COMMAND ${APPLICATION} seven RadixSort
+)
+set_tests_properties (${prefix}_can_Detect_Wrong_Number_Format PROPERTIES
+    PASS_REGULAR_EXPRESSION "Wrong number format!"
+    LABELS "${MODULE}")
+	
+add_test(
+    NAME ${prefix}_can_Detect_Wrong_Operation_Format
+    COMMAND ${APPLICATION} 10000 RS
+)
+set_tests_properties (${prefix}_can_Detect_Wrong_Operation_Format PROPERTIES
+    PASS_REGULAR_EXPRESSION "Wrong operation format!"
+    LABELS "${MODULE}")
+	
+add_test(
+    NAME ${prefix}_can_Calculate_How_Much_Mem_Is_Used
+    COMMAND ${APPLICATION} 100000 HowMuchMem
+)
+set_tests_properties (${prefix}_can_Calculate_How_Much_Mem_Is_Used PROPERTIES
+    PASS_REGULAR_EXPRESSION "The amount of occupied memory = 402052"
+    LABELS "${MODULE}")
+	
+add_test(
+    NAME ${prefix}_can_Radix_Sort
+    COMMAND ${APPLICATION} 1000000 RadixSort
+)
+set_tests_properties (${prefix}_can_Radix_Sort PROPERTIES
+    PASS_REGULAR_EXPRESSION "Array size 1000000 sorted by RadixSort."
+    LABELS "${MODULE}")
+	
+

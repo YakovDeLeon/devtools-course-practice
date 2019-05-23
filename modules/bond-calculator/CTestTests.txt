@@ -1,0 +1,54 @@
+#############################################
+##### Testing
+#############################################
+
+set(prefix "${MODULE}")
+
+add_test(
+    NAME ${prefix}_can_Run
+    COMMAND ${APPLICATION}
+)
+set_tests_properties (${prefix}_can_Run PROPERTIES
+    LABELS "${MODULE}")
+
+add_test(
+    NAME ${prefix}_can_Print_Help_Without_Arguments
+    COMMAND ${APPLICATION}
+)
+
+set_tests_properties (${prefix}_can_Print_Help_Without_Arguments PROPERTIES
+    PASS_REGULAR_EXPRESSION "This is a bond calculator application"
+    LABELS "${MODULE}")
+
+
+add_test(
+    NAME ${prefix}_can_Calculate_Total_Income
+    COMMAND ${APPLICATION} 100 90 2020 50 2019 6 total
+)
+set_tests_properties (${prefix}_can_Calculate_Total_Income PROPERTIES
+    PASS_REGULAR_EXPRESSION "Total income"
+    LABELS "${MODULE}")
+
+add_test(
+    NAME ${prefix}_can_Calculate_Payments
+    COMMAND ${APPLICATION} 100 90 2020 50 2019 6 payments
+)
+set_tests_properties (${prefix}_can_Calculate_Payments PROPERTIES
+    PASS_REGULAR_EXPRESSION "Payments"
+    LABELS "${MODULE}")
+
+add_test(
+    NAME ${prefix}_can_Calculate_Relative_Income
+    COMMAND ${APPLICATION} 100 90 2020 50 2019 6 relative
+)
+set_tests_properties (${prefix}_can_Calculate_Relative_Income PROPERTIES
+    PASS_REGULAR_EXPRESSION "Relative"
+    LABELS "${MODULE}")
+
+add_test(
+    NAME ${prefix}_can_Calculate_Yearly_Income
+    COMMAND ${APPLICATION} 100 90 2020 50 2019 6 yearly
+)
+set_tests_properties (${prefix}_can_Calculate_Yearly_Income PROPERTIES
+    PASS_REGULAR_EXPRESSION "Yearly"
+    LABELS "${MODULE}")

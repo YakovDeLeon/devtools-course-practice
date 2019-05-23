@@ -6,34 +6,26 @@
 
 using std::max;
 
-void CAvl::MakeEmpty(CNode* t) {
-    if (t == nullptr) {
-        return;
-    }
-    MakeEmpty(t->m_pLeft);
-    MakeEmpty(t->m_pRight);
-    delete t;
-}
-
 CNode* CAvl::Insert(const key& x, CNode* t) {
     if (t == nullptr) {
         t = new CNode;
-        t->m_nData = x;
-        t->m_nHeight = 0;
-        t->m_pLeft = t->m_pRight = nullptr;
-    } else if (x < t->m_nData) {
-        t->m_pLeft = Insert(key(x), t->m_pLeft);
-        if (Height(t->m_pLeft) - Height(t->m_pRight) == 2) {
-            if (x < t->m_pLeft->m_nData) {
+        t->data_ = x;
+        t->height_ = 0;
+        t->pLeft_ = t->pRight_ = nullptr;
+    } else if (x < t->data_) {
+        t->pLeft_ = Insert(key(x), t->pLeft_);
+        if (Height(t->pLeft_) - Height(t->pRight_) == 2) {
+            if (x < t->pLeft_->data_) {
                 t = SingleRightRotate(t);
             } else {
                 t = DoubleRightRotate(t);
             }
         }
-    } else if (x > t->m_nData) {
-        t->m_pRight = Insert(key(x), t->m_pRight);
-        if (Height(t->m_pRight) - Height(t->m_pLeft) == 2) {
-            if (x > t->m_pRight->m_nData) {
+
+    } else if (x > t->data_) {
+        t->pRight_ = Insert(key(x), t->pRight_);
+        if (Height(t->pRight_) - Height(t->pLeft_) == 2) {
+            if (x > t->pRight_->data_) {
                 t = SingleLeftRotate(t);
             } else {
                 t = DoubleLeftRotate(t);
@@ -41,55 +33,43 @@ CNode* CAvl::Insert(const key& x, CNode* t) {
         }
     }
 
-    t->m_nHeight = max(Height(t->m_pLeft), Height(t->m_pRight)) + 1;
+    t->height_ = max(Height(t->pLeft_), Height(t->pRight_)) + 1;
     return t;
 }
 
 CNode* CAvl::SingleRightRotate(CNode* t) {
-    CNode* u = t->m_pLeft;
-    t->m_pLeft = u->m_pRight;
-    u->m_pRight = t;
-    t->m_nHeight = max(Height(t->m_pLeft), Height(t->m_pRight)) + 1;
-    u->m_nHeight = max(Height(u->m_pLeft), t->m_nHeight) + 1;
+    CNode* u = t->pLeft_;
+    t->pLeft_ = u->pRight_;
+    u->pRight_ = t;
+    t->height_ = max(Height(t->pLeft_), Height(t->pRight_)) + 1;
+    u->height_ = max(Height(u->pLeft_), t->height_) + 1;
     return u;
 }
 
 CNode* CAvl::SingleLeftRotate(CNode* t) {
-    CNode* u = t->m_pRight;
-    t->m_pRight = u->m_pLeft;
-    u->m_pLeft = t;
-    t->m_nHeight = max(Height(t->m_pLeft), Height(t->m_pRight)) + 1;
-    u->m_nHeight = max(Height(t->m_pRight), t->m_nHeight) + 1;
+    CNode* u = t->pRight_;
+    t->pRight_ = u->pLeft_;
+    u->pLeft_ = t;
+    t->height_ = max(Height(t->pLeft_), Height(t->pRight_)) + 1;
+    u->height_ = max(Height(t->pRight_), t->height_) + 1;
     return u;
 }
 
 CNode* CAvl::DoubleLeftRotate(CNode* t) {
-    t->m_pRight = SingleRightRotate(t->m_pRight);
+    t->pRight_ = SingleRightRotate(t->pRight_);
     return SingleLeftRotate(t);
 }
 
 CNode* CAvl::DoubleRightRotate(CNode* t) {
-    t->m_pLeft = SingleLeftRotate(t->m_pLeft);
+    t->pLeft_ = SingleLeftRotate(t->pLeft_);
     return SingleRightRotate(t);
 }
 
 CNode* CAvl::FindMin(CNode* t) {
-    if (t == nullptr) {
-        return nullptr;
-    } else if (t->m_pLeft == nullptr) {
+    if (t->pLeft_ == nullptr) {
         return t;
     } else {
-        return FindMin(t->m_pLeft);
-    }
-}
-
-CNode* CAvl::FindMax(CNode* t) {
-    if (t == nullptr) {
-        return nullptr;
-    } else if (t->m_pRight == nullptr) {
-        return t;
-    } else {
-        return FindMax(t->m_pRight);
+        return FindMin(t->pLeft_);
     }
 }
 
@@ -101,66 +81,66 @@ CNode* CAvl::Remove(const key& x, CNode* t) {
         // Element not found
         //
         return nullptr;
-    } else if (x < t->m_nData) {
+    } else if (x < t->data_) {
         //
         // Searching for element
         //
-        t->m_pLeft = Remove(x, t->m_pLeft);
-    } else if (x > t->m_nData) {
-        t->m_pRight = Remove(x, t->m_pRight);
-    } else if (t->m_pLeft && t->m_pRight) {
+        t->pLeft_ = Remove(x, t->pLeft_);
+    } else if (x > t->data_) {
+        t->pRight_ = Remove(x, t->pRight_);
+    } else if (t->pLeft_ && t->pRight_) {
         //
         // Element found
         // With 2 children
         //
-        temp = FindMin(t->m_pRight);
-        t->m_nData = temp->m_nData;
-        t->m_pRight = Remove(t->m_nData, t->m_pRight);
+        temp = FindMin(t->pRight_);
+        t->data_ = temp->data_;
+        t->pRight_ = Remove(t->data_, t->pRight_);
     } else {
         //
         // With one or zero child
         //
         temp = t;
-        if (t->m_pLeft == nullptr) {
-            t = t->m_pRight;
-        } else if (t->m_pRight == nullptr) {
-            t = t->m_pLeft;
+        if (t->pLeft_ == nullptr) {
+            t = t->pRight_;
+        } else if (t->pRight_ == nullptr) {
+            t = t->pLeft_;
         }
         delete temp;
     }
     if (t == nullptr)
         return t;
 
-    t->m_nHeight = max(Height(t->m_pLeft), Height(t->m_pRight)) + 1;
+    t->height_ = max(Height(t->pLeft_), Height(t->pRight_)) + 1;
 
-    if (Height(t->m_pLeft) - Height(t->m_pRight) == 2) {
+    if (Height(t->pLeft_) - Height(t->pRight_) == 2) {
         //
-        // If CNode is unbalanced
-        // If m_pLeft CNode is deleted, m_pRight case
+        // If node is unbalanced
+        // If left node is deleted, right case
         //
-        if (Height(t->m_pLeft->m_pLeft) - Height(t->m_pLeft->m_pRight) == 1) {
+        if (Height(t->pLeft_->pLeft_) - Height(t->pLeft_->pRight_) == 1) {
             //
-            // m_pRight m_pRight case
+            // Right right case
             //
             return SingleRightRotate(t);
         } else {
             //
-            // m_pRight m_pLeft case
+            // Right left case
             //
             return DoubleRightRotate(t);
         }
-    } else if (Height(t->m_pRight) - Height(t->m_pLeft) == 2) {
+    } else if (Height(t->pRight_) - Height(t->pLeft_) == 2) {
         //
-        // If m_pRight CNode is deleted, m_pLeft case
+        // If Right node is deleted, left case
         //
-        if (Height(t->m_pRight->m_pRight) - Height(t->m_pRight->m_pLeft) == 1) {
+        if (Height(t->pRight_->pRight_) - Height(t->pRight_->pLeft_) == 1) {
             //
-            // m_pLeft m_pLeft case
+            // Left left case
             //
             return SingleLeftRotate(t);
         } else {
             //
-            // m_pLeft m_pRight case
+            // Left right case
             //
             return DoubleLeftRotate(t);
         }
@@ -169,38 +149,38 @@ CNode* CAvl::Remove(const key& x, CNode* t) {
 }
 
 int CAvl::Height(CNode* t) {
-    return (t == nullptr ? -1 : t->m_nHeight);
+    return (t == nullptr ? -1 : t->height_);
 }
 
 CAvl::CAvl() {
-    m_pRoot = nullptr;
+    pRoot_ = nullptr;
 }
 
 void CAvl::Insert(const key& x) {
-    m_pRoot = Insert(x, m_pRoot);
+    pRoot_ = Insert(x, pRoot_);
 }
 
 void CAvl::Remove(const key& x) {
-    m_pRoot = Remove(x, m_pRoot);
+    pRoot_ = Remove(x, pRoot_);
 }
 
 key CAvl::Find(const key & x) {
-    CNode * t = this->m_pRoot;
+    CNode * t = this->pRoot_;
     while (t != nullptr) {
-        if (x < t->m_nData) {
-            t = t->m_pLeft;
-        } else if (x > t->m_nData) {
-            t = t->m_pRight;
-        } else if (x == t->m_nData) {
-            return (t->m_nData);
+        if (x < t->data_) {
+            t = t->pLeft_;
+        } else if (x > t->data_) {
+            t = t->pRight_;
+        } else if (x == t->data_) {
+            return (t->data_);
         }
     }
     return key();
 }
 
 key CAvl::GetRoot() const {
-    if (m_pRoot) {
-        return m_pRoot->m_nData;
+    if (pRoot_) {
+        return pRoot_->data_;
     } else {
         return key();
     }

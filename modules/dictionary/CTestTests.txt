@@ -1,0 +1,77 @@
+#############################################
+##### Testing
+#############################################
+
+set(prefix "${MODULE}")
+
+add_test(
+    NAME ${prefix}_can_Run
+    COMMAND ${APPLICATION}
+)
+set_tests_properties (${prefix}_can_Run PROPERTIES
+    LABELS "${MODULE}")
+
+add_test(
+    NAME ${prefix}_can_Print_Help_Without_Arguments
+    COMMAND ${APPLICATION}
+)
+
+set_tests_properties (${prefix}_can_Print_Help_Without_Arguments PROPERTIES
+    PASS_REGULAR_EXPRESSION "This is a dictionary application"
+    LABELS "${MODULE}")
+
+add_test(
+    NAME ${prefix}_can_Check_Number_Of_Arguments
+    COMMAND ${APPLICATION} 1 2
+)
+set_tests_properties (${prefix}_can_Check_Number_Of_Arguments PROPERTIES
+    PASS_REGULAR_EXPRESSION "ERROR: Should be at least 3 arguments."
+    LABELS "${MODULE}")
+
+add_test(
+    NAME ${prefix}_can_Detect_Invalid_Operation
+    COMMAND ${APPLICATION} avc 2 asa
+)
+set_tests_properties (${prefix}_can_Detect_Invalid_Operation PROPERTIES
+    PASS_REGULAR_EXPRESSION "Invalid operation!"
+    LABELS "${MODULE}")
+
+add_test(
+    NAME ${prefix}_can_Detect_Invalid_Key
+    COMMAND ${APPLICATION} abc abc -smax
+)
+set_tests_properties (${prefix}_can_Detect_Invalid_Key PROPERTIES
+    PASS_REGULAR_EXPRESSION "Invalid key!"
+    LABELS "${MODULE}")
+
+add_test(
+    NAME ${prefix}_can_Detect_Invalid_Search_Item
+    COMMAND ${APPLICATION} avc 4 ac 4 -s
+)
+set_tests_properties (${prefix}_can_Detect_Invalid_Search_Item PROPERTIES
+    PASS_REGULAR_EXPRESSION "Invalid search element!"
+    LABELS "${MODULE}")
+
+add_test(
+    NAME ${prefix}_can_Find_Min_Item
+    COMMAND ${APPLICATION} a 0 b -3 c -2 -smin
+)
+set_tests_properties (${prefix}_can_Find_Min_Item PROPERTIES
+    PASS_REGULAR_EXPRESSION "a 0"
+    LABELS "${MODULE}")
+
+add_test(
+    NAME ${prefix}_can_Find_Max_Item
+    COMMAND ${APPLICATION} a 0 b -3 c 2 -smax
+)
+set_tests_properties (${prefix}_can_Find_Max_Item PROPERTIES
+    PASS_REGULAR_EXPRESSION "c 2"
+    LABELS "${MODULE}")
+
+add_test(
+    NAME ${prefix}_can_Find_Item
+    COMMAND ${APPLICATION} a 0 b -3 c -2 -s b
+)
+set_tests_properties (${prefix}_can_Find_Item PROPERTIES
+    PASS_REGULAR_EXPRESSION "b -3"
+    LABELS "${MODULE}")

@@ -4,86 +4,116 @@
 #define MODULES_SET_INCLUDE_SET_H_
 
 #include <algorithm>
+#include <initializer_list>
 #include <iterator>
 #include <vector>
 
-template <typename T>
+template<typename T>
 class Set {
  private:
-  std::vector<T> items_;
+    std::vector<T> items_;
 
  public:
-  using const_iterator = typename std::vector<T>::const_iterator;
+    using const_iterator = typename std::vector<T>::const_iterator;
 
-  Set() = default;
-  Set(const Set& src) = default;
-  Set(Set&& src) = default;
-  Set& operator=(const Set& src) = default;
-  Set& operator=(Set&& src) = default;
-  ~Set() = default;
+    Set() = default;
+    Set(const Set &src) = default;
+    Set& operator=(const Set &src) = default;
+    ~Set() = default;
 
-  void Insert(T item) {
-    if (std::find(items_.begin(), items_.end(), item) == items_.end()) {
-      items_.push_back(item);
-      std::sort(items_.begin(), items_.end());
+    explicit Set(const std::vector<T> vector) : items_(std::move(vector)) {
+        std::sort(items_.begin(), items_.end());
+        items_.erase(std::unique(items_.begin(), items_.end()), items_.end());
     }
-  }
 
-  void Remove(const T &item) {
-    const auto& pos = std::find(items_.begin(), items_.end(), item);
-    if (pos != items_.end()) {
-      items_.erase(pos);
+    Set(const std::initializer_list<T> list) : items_(std::move(list)) {
+        std::sort(items_.begin(), items_.end());
+        items_.erase(std::unique(items_.begin(), items_.end()), items_.end());
     }
-  }
 
-  const_iterator begin() const { return items_.begin(); }
+    const_iterator begin() const { return items_.begin(); }
 
-  const_iterator end() const { return items_.end(); }
+    const_iterator end() const { return items_.end(); }
 
-  size_t Size() const { return items_.size(); }
+    size_t size() const { return items_.size(); }
 
-  void Expand(const Set &other) {
-      for (auto& item : other) {
-          Insert(item);
-      }
-  }
+    void Add(T item) {
+        if (std::find(items_.begin(), items_.end(), item) == items_.end()) {
+            items_.push_back(item);
+            std::sort(items_.begin(), items_.end());
+        }
+    }
 
-  void Subtract(const Set &other) {
-      for (auto& item : other) {
-          Remove(item);
-      }
-  }
+    void Remove(const T &item) {
+        const auto &pos = std::find(items_.begin(), items_.end(), item);
+        if (pos != items_.end()) {
+            items_.erase(pos);
+        }
+    }
 
-  bool Contains(const T &item) const {
-      for (const auto &other : items_) {
-          if (item == other) {
-              return true;
-          }
-      }
-      return false;
-  }
+    bool Contains(const T &item) const {
+        for (const auto &other : items_) {
+            if (item == other) {
+                return true;
+            }
+        }
 
-  static Set Intersect(const Set &set1, const Set &set2) {
-      Set<T> resSet(set1);
-      for (auto item : set1.items_) {
-          if (!set2.Contains(item)) {
-              resSet.Remove(item);
-          }
-      }
-      return resSet;
-  }
+        return false;
+    }
 
-  static Set SymmetricDifference(const Set &set1, const Set &set2) {
-      Set<T> resSet(set1);
-      for (auto item : set2.items_) {
-          if (!set1.Contains(item)) {
-              resSet.Insert(item);
-          } else {
-              resSet.Remove(item);
-          }
-      }
-      return resSet;
-  }
+    static Set Union(const Set &set1, const Set &set2) {
+        Set<T> resSet(set1);
+
+        for (auto item : set2) {
+            resSet.Add(item);
+        }
+
+        return resSet;
+    }
+
+    static Set Intersection(const Set &set1, const Set &set2) {
+        Set<T> resSet(set1);
+
+        for (auto item : set1) {
+            if (!set2.Contains(item)) {
+                resSet.Remove(item);
+            }
+        }
+
+        return resSet;
+    }
+
+    static Set Difference(const Set &set1, const Set &set2) {
+        Set<T> resSet(set1);
+
+        for (auto item : set2) {
+            resSet.Remove(item);
+        }
+
+        return resSet;
+    }
+
+    static Set SymmetricDifference(const Set &set1, const Set &set2) {
+        return Difference(Union(set1, set2), Intersection(set1, set2));
+    }
+
+    bool IsSubset(const Set &other) const {
+        for (auto item : other) {
+            if (!Contains(item)) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    bool operator==(const Set &other) const {
+        return this->items_ == other.items_;
+    }
+
+    bool operator!=(const Set &other) const {
+        return this->items_ != other.items_;
+    }
 };
 
 #endif  // MODULES_SET_INCLUDE_SET_H_

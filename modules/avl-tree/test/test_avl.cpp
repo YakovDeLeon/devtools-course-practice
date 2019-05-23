@@ -4,9 +4,8 @@
 #include <vector>
 #include "include/avl.h"
 
-const int32_t sizekey = 6;
-const int nLenght = 10;
-const int32_t nBegin = 0;
+const int nLenght = 100000;
+const int32_t nBegin = -10000;
 const int32_t nEnd = 10000;
 
 TEST(CAvlTest,
@@ -36,12 +35,12 @@ TEST(CAvlTest,
     CAvl tree;
     std::vector<key> vKeys(nLenght);
 
-    for (size_t i = 0; i < nLenght; i++) {
+    for (int32_t i = 0; i < nLenght; i++) {
         vKeys.push_back(GetRandomKey(nBegin, nEnd));
         tree.Insert(vKeys[i]);
     }
-
-    for (size_t i = 0; i < nLenght; i++) {
+  
+    for (int32_t i = 0; i < nLenght; i++) {
         ASSERT_EQ(vKeys[i], tree.Find(vKeys[i]));
     }
 }
@@ -51,7 +50,8 @@ TEST(CAvlTest,
     CAvl tree;
     std::vector<key> vKeys(nLenght);
 
-    for (size_t i = 0; i < nLenght; i++) {
+
+    for (int32_t i = 0; i < nLenght; i++) {
         vKeys.push_back(GetRandomKey(nBegin, nEnd));
         tree.Insert(vKeys[i]);
     }
@@ -65,7 +65,7 @@ TEST(CAvlTest,
     CAvl tree;
     std::vector<key> vKeys(nLenght);
 
-    for (size_t i = 0; i < nLenght; i++) {
+    for (int32_t i = 0; i < nLenght; i++) {
         vKeys.push_back(GetRandomKey(nBegin, nEnd));
         tree.Insert(vKeys[i]);
     }
@@ -88,4 +88,133 @@ TEST(CAvlTest,
     EXPECT_EQ(vKeys[7], tree.Find(vKeys[7]));
     EXPECT_EQ(vKeys[8], tree.Find(vKeys[8]));
     EXPECT_EQ(vKeys[9], tree.Find(vKeys[9]));
+}
+
+TEST(CAvlTest,
+    CanRemoveAllTree) {
+    CAvl tree;
+    std::vector<key> vKeys(nLenght);
+
+    for (int32_t i = 0; i < nLenght; i++) {
+        vKeys.push_back(GetRandomKey(nBegin, nEnd));
+        tree.Insert(vKeys[i]);
+    }
+
+    for (int32_t i = 0; i < nLenght; i++) {
+        tree.Remove(vKeys[i]);
+    }
+
+    EXPECT_EQ(key(), tree.GetRoot());
+}
+
+TEST(CAvlTest,
+    CanInsertObjectsAscending) {
+    CAvl tree;
+
+    for (int32_t i = 0; i < nLenght; i++) {
+        tree.Insert(i);
+        EXPECT_EQ(i, tree.Find(i));
+    }
+}
+
+TEST(CAvlTest,
+    CanInsertObjectsDescending) {
+    CAvl tree;
+
+    for (int32_t i = nLenght; i != 0; i--) {
+        tree.Insert(i);
+        EXPECT_EQ(i, tree.Find(i));
+    }
+}
+
+TEST(CAvlTest,
+    CanInsertObjectWithDLRotate) {
+    CAvl tree;
+
+    tree.Insert(4);
+    tree.Insert(5);
+    tree.Insert(7);
+    tree.Insert(9);
+    // There is double left rotation will be executed
+    tree.Insert(8);
+    EXPECT_EQ(8, tree.Find(8));
+}
+
+TEST(CAvlTest,
+    CanInsertObjectWithDRRotate) {
+    CAvl tree;
+
+    tree.Insert(5);
+    tree.Insert(6);
+    tree.Insert(3);
+    tree.Insert(1);
+    // There is double right rotation will be executed
+    tree.Insert(2);
+    EXPECT_EQ(2, tree.Find(2));
+}
+
+TEST(CAvlTest,
+    CanRemoveObjectsAscending) {
+    CAvl tree;
+
+    for (int32_t i = 0; i != nLenght; i++) {
+        tree.Insert(i);
+    }
+
+    for (int32_t i = 0; i != nLenght; i++) {
+        tree.Remove(i);
+        EXPECT_EQ(key(), tree.Find(i));
+    }
+}
+
+TEST(CAvlTest,
+    CanRemoveObjectsDescending) {
+    CAvl tree;
+
+    for (int32_t i = 0; i != nLenght; i++) {
+        tree.Insert(i);
+    }
+
+    for (int32_t i = nLenght; i != 0; i--) {
+        tree.Remove(i);
+        EXPECT_EQ(key(), tree.Find(i));
+    }
+}
+
+TEST(CAvlTest,
+    CanRemoveRoot) {
+    CAvl tree;
+
+    for (int32_t i = 0; i != nLenght; i++) {
+        tree.Insert(i);
+    }
+
+    key nRoot = tree.GetRoot();
+    tree.Remove(nRoot);
+    EXPECT_EQ(key(), tree.Find(nRoot));
+}
+
+TEST(CAvlTest,
+    CanRemoveNonexistRootChild) {
+    CAvl tree;
+    tree.Insert(0);
+    tree.Remove(0);
+    EXPECT_EQ(0, tree.Find(0));
+    EXPECT_EQ(key(), tree.Find(-1));
+}
+
+TEST(CAvlTest,
+    CanRemoveNonexistObject) {
+    CAvl tree;
+
+    for (int32_t i = 0; i != nLenght; i++) {
+        tree.Insert(i);
+    }
+
+    key nRoot = tree.GetRoot();
+    tree.Remove(-1);
+    for (int32_t i = 0; i != nLenght; i++) {
+        EXPECT_EQ(i, tree.Find(i));
+    }
+    EXPECT_EQ(key(), tree.Find(-1));
 }
